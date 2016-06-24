@@ -6,7 +6,7 @@ import os
 import paho.mqtt.client as mqtt
 
 from queue import Queue
-from library.msgbus import msgbus1
+from ManagementGUI.library.msgbus import msgbus1
 
 
 class mqttbroker(msgbus1):

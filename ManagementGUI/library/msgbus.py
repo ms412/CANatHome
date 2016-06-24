@@ -5,6 +5,7 @@ class msgbus1(object):
 
     def __init__(self):
         test =0
+        print('msgbus')
 
 
     def msgbus_subscribe(self, channel, callback):
@@ -50,7 +51,7 @@ class msgbus1(object):
             result = True
      #       print('Channel',channel)
             for item in msgbus1.callerList[channel]:
-                print('Item',channel,item)
+         #       print('Item',channel,item)
                 item(*args, **kwargs)
         else:
             print('Channel not found')

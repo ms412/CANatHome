@@ -1,42 +1,21 @@
 import sys
 import time
-from library.msgbus import msgbus1
 from threading import Thread, Lock
-#from PyQt5.QtCore import *
-#from PyQt5.QtGui import *
-from PyQt5.QtCore import QAbstractItemModel, QFile, QIODevice, QModelIndex, Qt
+from library.msgbus import msgbus1
+from PyQt5 import uic, QtWidgets
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QStandardItem, QStandardItemModel
-from PyQt5 import QtWidgets
+import sys
 
-
-data1 = {'TEST1':{'Test1.1':'Test1.1.1'},'Test2':{'Test2.1':'Test2.1.1'}}
-data2 =  {'Test3':{'Test3.1':'Test3.1.1'}}
-
-class Window(QWidget, msgbus1):
-
+class Ui(QtWidgets.QMainWindow, msgbus1):
     def __init__(self):
-
-        QWidget.__init__(self)
+        super(Ui, self).__init__()
+        self.ui = uic.loadUi('mainwindow.ui')
+        self.ui.show()
 
         self.msgbus_subscribe('UPDATE', self.updateTree)
         print('start gui')
 
-        self.treeView = QTreeView()
-        self.treeView.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.treeView.customContextMenuRequested.connect(self.openMenu)
 
-        self.model = QStandardItemModel()
-       # self.updateTree()
-      #  self.addItems(self.model, data)
-       # self.addItems(self.model,data2)
-        self.treeView.setModel(self.model)
-
-        self.model.setHorizontalHeaderLabels([self.tr("Object")])
-
-        layout = QVBoxLayout()
-        layout.addWidget(self.treeView)
-        self.setLayout(layout)
 
 
     def updateTree(self, data):
@@ -71,16 +50,31 @@ class Window(QWidget, msgbus1):
                 level += 1
 
         menu = QMenu()
+
         if level == 0:
-            menu.addAction(self.tr("Edit person"))
+            action1 = menu.addAction('Add Gateway')
+
+            action2 = menu.addAction('Del Gateway')
+            print('action',action2)
+            action1.triggered.connect(self.test1)
+            action2.triggered.connect(self.test2)
+
         elif level == 1:
-            menu.addAction(self.tr("Edit object/container"))
-
+            menu.addAction(QAction('Add Bus',self))
+            menu.addAction(QAction('Del Bus',self))
         elif level == 2:
-            menu.addAction(self.tr("Edit object"))
-
+            menu.addAction(self.tr("Add Node"))
+        elif level == 3:
+            menu.addAction(QAction('Object',self))
+            menu.addSeparator()
+            menu.addAction(QAction('Add Bus',self))
         menu.exec_(self.treeView.viewport().mapToGlobal(position))
 
+    def test1(self):
+        print('1test')
+
+    def test2(self):
+        print('2test')
 
 class maingui(Thread):
     def __init__(self):

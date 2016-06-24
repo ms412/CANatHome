@@ -24,10 +24,10 @@ __license__ = 'GPL v3'
 import sys
 
 
-from library.mqttclient import *
-from library.msgbus import msgbus1
-from library.maingui import maingui
-from library.dataif import dataif
+from ManagementGUI.library.mqttclient import *
+from ManagementGUI.library.msgbus import msgbus1
+from ManagementGUI.gui.mainwindow import maingui
+from ManagementGUI.library.dataif import dataif, monitor
 
 
 
@@ -40,14 +40,21 @@ class manager(msgbus1):
         self._cfg_instrument = None
         self._dataif = None
 
+        self._monitor = None
+
+        self.msgbus_subscribe('LOG',self.log)
+
+    def log(self,data):
+        print('LOG:',data)
+
     def start_gui(self):
         self._gui = maingui()
         self._gui.start()
 
     def start_mqttbroker(self):
-        self._cfg_broker={'HOST':'192.168.2.50','SUBSCRIBE':'/TEST'}
+        self._cfg_broker={'HOST':'192.168.2.50','SUBSCRIBE':'/XX/'}
         self._mqttbroker = mqttbroker(self._cfg_broker)
-        self.msgbus_subscribe('MQTT_RX',self.dataInterface)
+        self.msgbus_subscribe('MQTT_RX',self.test2)
         self._mqttbroker.start()
         return True
 
@@ -56,10 +63,14 @@ class manager(msgbus1):
         self._dataif.start()
         print(self._dataif)
 
+    def test2(self,data):
+        print('mqtt Rx',data)
+        self._monitor.uptime(data)
+
 
     def test1(self,data):
         print(data)
-        self.msgbus_publish('SEND',data)
+        self.msgbus_publish('UPDATE',data)
      #   self._dataif.merge(data)
 
     def run(self):
@@ -70,19 +81,21 @@ class manager(msgbus1):
     #    self.start_logging()
      #   self.msgbus_publish('LOG','%s Start mqtt2gpio adapter; Version: %s, %s '%('INFO', __VERSION__ ,__DATE__))
 
+        self._monitor = monitor()
+
         self.start_mqttbroker()
         self.start_gui()
         time.sleep(5)
         self.dataInterface()
 
         print('test')
-        self.test1({'Test1':{'Test1.1':'Test1.1.1'},'Test1':{'Test2.1':'Test2.1.1'}})
-        time.sleep(5)
-        self.test1({'Test1':{'Test3.1':'Test3.1.1'}})
-        time.sleep(5)
-        self.test1({'Test1':{'Test3.3':'Test3.1.2'}})
-        time.sleep(5)
-        self.test1({'Test1':{'Test3.2': {'Test3.2.1':'Test3.2.1.2'}}})
+      #  self.test1({'Test1':{'Test1.1':{'Test1.1.1':{'Test1.1.1.1':'Test1.1.1.1'}},'Test1':{'Test2.1':'Test2.1.1'}}})
+       # time.sleep(5)
+        #self.test1({'Test1':{'Test3.1':'Test3.1.1'}})
+       # time.sleep(5)
+        #self.test1({'Test1':{'Test3.3':'Test3.1.2'}})
+        #time.sleep(5)
+        #self.test1({'Test1':{'Test3.2': {'Test3.2.1':'Test3.2.1.2'}}})
 
       #  self.msgbus_publish('MQTT_TX','123456')
 
