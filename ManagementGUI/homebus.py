@@ -13,7 +13,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-__app__ = "Homebust Adapter"
+__app__ = "Homebus Adapter"
 __VERSION__ = "0.1"
 __DATE__ = "18.06.2016"
 __author__ = "Markus Schiesser"
