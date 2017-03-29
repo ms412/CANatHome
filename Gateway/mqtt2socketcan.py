@@ -25,7 +25,7 @@ __license__ = 'GPL v3'
 import sys
 
 from library.adapter import *
-from library.configfile import getConfig
+from library.configfileJson import getConfig
 from library.mqttclient import *
 from library.msgbus import *
 from library.socketcan import socketcanif
@@ -35,7 +35,7 @@ from Gateway.library.logging import log_adapter
 
 class manager(msgbus):
 
-    def __init__(self,cfg_file='configfile.cfg'):
+    def __init__(self,cfg_file='configfileJson.py.cfg'):
 
         self._cfg_file = cfg_file
 
@@ -94,8 +94,8 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         configfile = sys.argv[1]
     else:
-        configfile = 'configfile.cfg'
+        configfile = 'configfileJson.py.cfg'
 
-   # print('Configfile',configfile)
+   # print('Configfile',configfileJson.py)
     mgr_handle = manager(configfile)
     mgr_handle.run()

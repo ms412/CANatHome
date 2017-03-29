@@ -35,7 +35,7 @@ class getConfig:
 if __name__ == '__main__':
 
     config = configfile()
-    config.open('configfile.cfg')
+    config.open('configfileJson.py.cfg')
     cfg = config.tree()
     section1 = cfg['BROKER']
     print('Broker',section1)

@@ -83,13 +83,13 @@ class manager(msgbus1):
 
         self._monitor = monitor()
 
-        self.start_mqttbroker()
+      #  self.start_mqttbroker()
         self.start_gui()
         time.sleep(5)
         self.dataInterface()
 
         print('test')
-      #  self.test1({'Test1':{'Test1.1':{'Test1.1.1':{'Test1.1.1.1':'Test1.1.1.1'}},'Test1':{'Test2.1':'Test2.1.1'}}})
+        self.test1({'Test1':{'Test1.1':{'Test1.1.1':{'Test1.1.1.1':'Test1.1.1.1'}},'Test1':{'Test2.1':'Test2.1.1'}}})
        # time.sleep(5)
         #self.test1({'Test1':{'Test3.1':'Test3.1.1'}})
        # time.sleep(5)
